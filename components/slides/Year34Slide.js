@@ -1,116 +1,137 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import TerminalWindow from '../TerminalWindow';
+import TypeWriter from '../TypeWriter';
+import { specializations } from '../../data/specializations';
 import { tracks } from '../../data/tracks';
 
+const alumniStories = [
+  {
+    name: 'พี่ณัฐ (AI Track)',
+    graduation: '2022',
+    currentRole: 'ML Engineer at Agoda',
+    salary: '85,000 THB/month',
+    story:
+      'เริ่มจากไม่รู้ Python เลย ตอนนี้ทำ recommendation system ให้ลูกค้า millions คน',
+    projects: ['Hotel Recommendation AI', 'Price Optimization Model'],
+  },
+  {
+    name: 'พี่มิน (Web Dev Track)',
+    graduation: '2021',
+    currentRole: 'Senior Full-Stack at LINE',
+    salary: '95,000 THB/month',
+    story:
+      'ตอนจบทำ startup ตัวเอง ขายให้บริษัทใหญ่ได้ แล้วเข้าทำงานที่ LINE',
+    projects: ['E-commerce Platform', 'Real-time Chat System'],
+  },
+];
+
 export default function Year34Slide() {
-  const [filters, setFilters] = useState({
-    difficulty: 1,
-    salary: 1,
-    math: 1,
-    demand: 1,
-  });
-  const [compare, setCompare] = useState([]);
+  const [active, setActive] = useState(null);
 
-  const handleFilter = (key) => (e) => {
-    setFilters({ ...filters, [key]: Number(e.target.value) });
+  const toggle = (id) => {
+    setActive((prev) => (prev === id ? null : id));
   };
-
-  const filtered = tracks.filter(
-    (t) =>
-      t.difficulty >= filters.difficulty &&
-      t.salary >= filters.salary &&
-      t.math >= filters.math &&
-      t.demand >= filters.demand
-  );
-
-  const toggleCompare = (id) => {
-    setCompare((prev) =>
-      prev.includes(id)
-        ? prev.filter((p) => p !== id)
-        : prev.length < 2
-        ? [...prev, id]
-        : prev
-    );
-  };
-
-  const comparedTracks = tracks.filter((t) => compare.includes(t.id));
 
   return (
     <div className="slide" onClick={() => {}}>
-      <motion.div
-        className="terminal text-left space-y-4 overflow-y-auto h-[80vh] p-2"
-        whileHover={{ scale: 1.02, boxShadow: '0 0 20px rgba(0,255,65,0.8)' }}
-      >
-        <h2 className="text-2xl md:text-4xl font-bold mb-2">
-          🎯 ปี 3-4: เลือกเส้นทางที่ชอบ
-        </h2>
-
-        {/* Filters */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs md:text-sm">
-          {[
-            ['difficulty', 'Difficulty'],
-            ['salary', 'Salary'],
-            ['math', 'Math'],
-            ['demand', 'Demand'],
-          ].map(([key, label]) => (
-            <label key={key} className="flex flex-col">
-              <span>{label}: {filters[key]}</span>
-              <input
-                type="range"
-                min="1"
-                max="5"
-                value={filters[key]}
-                onChange={handleFilter(key)}
-              />
-            </label>
-          ))}
+      {/* SECTION 1 - HEADER */}
+      <TerminalWindow title="specialization_selector.py" className="space-y-4">
+        <TypeWriter text="🎯 ปี 3-4: Choose Your Tech Stack & Specialization..." />
+        <div className="mt-4">
+          <span className="text-yellow-400">❯ </span>
+          <span className="text-cyan-400">select_specialization()</span>
         </div>
+        <div className="text-green-400 mt-2 space-y-1 text-sm">
+          <div>✓ Foundation courses completed</div>
+          <div>✓ Ready for advanced tracks</div>
+          <div>✓ Portfolio projects prepared</div>
+        </div>
+      </TerminalWindow>
 
-        {/* Track list */}
-        <div className="space-y-2">
-          <p className="text-lg md:text-2xl">ผลการกรอง ({filtered.length} สาย)</p>
-          <div className="grid md:grid-cols-2 gap-2">
-            {filtered.map((track) => (
+      {/* SECTION 2-7 - SPECIALIZATION CARDS */}
+      <div className="mt-4 space-y-2 max-h-[50vh] overflow-y-auto p-2">
+        {specializations.map((spec) => (
+          <motion.div
+            key={spec.id}
+            className="bg-black/40 border rounded p-3 cursor-pointer"
+            whileHover={{ scale: 1.02 }}
+            onClick={() => toggle(spec.id)}
+          >
+            <div className="flex items-center space-x-2">
+              <span className="text-xl">{spec.icon}</span>
+              <h3 className="font-semibold text-lg">{spec.name}</h3>
+              <span className="text-sm text-gray-400">{spec.tagline}</span>
+            </div>
+            {active === spec.id && (
               <motion.div
-                key={track.id}
-                className="p-2 border rounded cursor-pointer bg-black/30"
-                whileHover={{ scale: 1.02 }}
-                onClick={() => toggleCompare(track.id)}
+                className="mt-2 text-sm space-y-1"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
               >
-                <h3 className="font-semibold text-lg">{track.name}</h3>
-                <div className="flex space-x-2 text-xs py-1">
-                  <span>Diff {track.difficulty}</span>
-                  <span>Salary {track.salary}</span>
-                  <span>Math {track.math}</span>
-                  <span>Demand {track.demand}</span>
-                </div>
-                <div className="text-xs space-y-1">
-                  <div>Pros: {track.pros.join(', ')}</div>
-                  <div>Cons: {track.cons.join(', ')}</div>
+                <p>{spec.description}</p>
+                <div className="grid grid-cols-2 gap-1">
+                  {Object.entries(spec.techStack).map(([k, list]) => (
+                    <div key={k}>
+                      <h4 className="font-semibold text-accent text-xs">{k}</h4>
+                      <p className="text-xs">{list.join(', ')}</p>
+                    </div>
+                  ))}
                 </div>
               </motion.div>
-            ))}
-          </div>
-        </div>
+            )}
+          </motion.div>
+        ))}
+      </div>
 
-        {/* Comparison */}
-        {comparedTracks.length === 2 && (
-          <div className="space-y-2 mt-4">
-            <h3 className="text-xl font-bold">เปรียบเทียบ</h3>
-            <div className="grid grid-cols-2 gap-2 text-xs md:text-sm">
-              {comparedTracks.map((t) => (
-                <div key={t.id} className="p-2 border rounded bg-black/30">
-                  <h4 className="font-semibold mb-1">{t.name}</h4>
-                  <div>Difficulty: {t.difficulty}</div>
-                  <div>Salary: {t.salary}</div>
-                  <div>Math: {t.math}</div>
-                  <div>Demand: {t.demand}</div>
-                </div>
+      {/* SECTION 8 - COMPARISON MATRIX */}
+      <div className="mt-4 space-y-2">
+        <h3 className="text-xl font-bold">Comparison Matrix</h3>
+        <div className="overflow-x-auto text-xs">
+          <table className="min-w-full border border-accent text-center">
+            <thead>
+              <tr className="bg-black/50">
+                <th className="p-1 border">Track</th>
+                <th className="p-1 border">Difficulty</th>
+                <th className="p-1 border">Salary</th>
+                <th className="p-1 border">Math</th>
+                <th className="p-1 border">Demand</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tracks.map((t) => (
+                <tr key={t.id} className="border-t">
+                  <td className="border px-1">{t.name}</td>
+                  <td className="border px-1">{'★'.repeat(t.difficulty)}</td>
+                  <td className="border px-1">{'★'.repeat(t.salary)}</td>
+                  <td className="border px-1">{'★'.repeat(t.math)}</td>
+                  <td className="border px-1">{'★'.repeat(t.demand)}</td>
+                </tr>
               ))}
-            </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* SECTION 9 - ALUMNI STORIES */}
+      <div className="mt-4 space-y-2">
+        <h3 className="text-xl font-bold">Alumni Success Stories</h3>
+        {alumniStories.map((a) => (
+          <div key={a.name} className="bg-black/40 border rounded p-2 text-sm">
+            <div className="font-semibold">{a.name} – {a.currentRole}</div>
+            <div className="text-gray-400">Graduated {a.graduation} | {a.salary}</div>
+            <p>{a.story}</p>
+            <p className="text-xs">Projects: {a.projects.join(', ')}</p>
           </div>
-        )}
-      </motion.div>
+        ))}
+      </div>
+
+      {/* SECTION 10 - TECHNOLOGY TRENDS */}
+      <div className="mt-4 space-y-1 text-sm">
+        <h3 className="text-xl font-bold">Technology Trend Predictions</h3>
+        <p>Job growth projections show continual increase across all tracks.</p>
+        <p>Cloud, AI, and mobile technologies are leading the next decade.</p>
+      </div>
     </div>
   );
 }
