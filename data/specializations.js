@@ -4,6 +4,7 @@ export const specializations = [
     name: 'AI & Data Science',
     icon: '🤖',
     tagline: 'Build Intelligent Systems',
+    colors: ['#007acc', '#00ffff'],
     description: 'Create AI models that predict, analyze, and learn from data',
     techStack: {
       languages: ['Python', 'R', 'SQL', 'MATLAB'],
@@ -73,6 +74,7 @@ export const specializations = [
     name: 'Full-Stack Web Development',
     icon: '🌐',
     tagline: 'Build Modern Web Applications',
+    colors: ['#22c55e', '#84cc16'],
     description: 'Create responsive, scalable web applications and APIs',
     techStack: {
       frontend: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'],
@@ -125,6 +127,7 @@ export const specializations = [
     name: 'Mobile App Development',
     icon: '📱',
     tagline: 'Build Cross-Platform Mobile Apps',
+    colors: ['#a855f7', '#ec4899'],
     description: 'Create native and cross-platform mobile applications',
     techStack: {
       crossPlatform: ['React Native', 'Flutter', 'Expo'],
@@ -154,5 +157,29 @@ export const specializations = [
       { title: 'Android Developer', salary: '45,000-100,000', demand: 'High' },
       { title: 'React Native Developer', salary: '55,000-120,000', demand: 'Very High' },
     ],
+  },
+  {
+    id: 'game-dev',
+    name: 'Game Development',
+    icon: '🎮',
+    tagline: 'Build Immersive Worlds',
+    colors: ['#f97316', '#ef4444'],
+    description: 'Design and code 2D/3D games for PC and mobile',
+  },
+  {
+    id: 'cyber-sec',
+    name: 'Cyber Security',
+    icon: '🔒',
+    tagline: 'Protect Digital Assets',
+    colors: ['#dc2626', '#991b1b'],
+    description: 'Keep systems and data safe from threats',
+  },
+  {
+    id: 'cloud-devops',
+    name: 'Cloud & DevOps',
+    icon: '☁️',
+    tagline: 'Deploy & Scale Apps',
+    colors: ['#0ea5e9', '#38bdf8'],
+    description: 'Manage cloud servers and CI/CD pipelines',
   },
 ];
