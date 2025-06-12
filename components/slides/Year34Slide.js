@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Modal from '../Modal';
 import { motion } from 'framer-motion';
 import TerminalWindow from '../TerminalWindow';
 import TypeWriter from '../TypeWriter';
@@ -27,14 +28,22 @@ const alumniStories = [
 ];
 
 export default function Year34Slide() {
-  const [active, setActive] = useState(null);
+  const [selected, setSelected] = useState(null);
+  const [tab, setTab] = useState('overview');
+  const [filter, setFilter] = useState('');
+  const [sortKey, setSortKey] = useState('name');
 
-  const toggle = (id) => {
-    setActive((prev) => (prev === id ? null : id));
+  const openModal = (spec) => {
+    setSelected(spec);
+    setTab('overview');
   };
 
+  const filtered = specializations
+    .filter((s) => s.name.toLowerCase().includes(filter.toLowerCase()))
+    .sort((a, b) => (a[sortKey] > b[sortKey] ? 1 : -1));
+
   return (
-    <div className="slide" onClick={() => {}}>
+    <div className="slide">
       {/* SECTION 1 - HEADER */}
       <TerminalWindow title="specialization_selector.py" className="space-y-4">
         <TypeWriter text="🎯 ปี 3-4: Choose Your Tech Stack & Specialization..." />
@@ -51,35 +60,38 @@ export default function Year34Slide() {
 
       {/* SECTION 2-7 - SPECIALIZATION CARDS */}
       <div className="mt-4 space-y-2 max-h-[50vh] overflow-y-auto p-2">
-        {specializations.map((spec) => (
+        <div className="flex items-center gap-2 mb-2">
+          <input
+            type="text"
+            placeholder="Filter"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="flex-1 bg-black/50 border border-accent rounded px-2 py-1 text-sm"
+          />
+          <select
+            value={sortKey}
+            onChange={(e) => setSortKey(e.target.value)}
+            className="bg-black/50 border border-accent rounded px-2 py-1 text-sm"
+          >
+            <option value="name">Sort A-Z</option>
+            <option value="id">Sort by ID</option>
+          </select>
+        </div>
+        {filtered.map((spec) => (
           <motion.div
             key={spec.id}
             className="bg-black/40 border rounded p-3 cursor-pointer"
             whileHover={{ scale: 1.02 }}
-            onClick={() => toggle(spec.id)}
+            onClick={(e) => {
+              e.stopPropagation();
+              openModal(spec);
+            }}
           >
             <div className="flex items-center space-x-2">
               <span className="text-xl">{spec.icon}</span>
               <h3 className="font-semibold text-lg">{spec.name}</h3>
               <span className="text-sm text-gray-400">{spec.tagline}</span>
             </div>
-            {active === spec.id && (
-              <motion.div
-                className="mt-2 text-sm space-y-1"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                <p>{spec.description}</p>
-                <div className="grid grid-cols-2 gap-1">
-                  {Object.entries(spec.techStack).map(([k, list]) => (
-                    <div key={k}>
-                      <h4 className="font-semibold text-accent text-xs">{k}</h4>
-                      <p className="text-xs">{list.join(', ')}</p>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            )}
           </motion.div>
         ))}
       </div>
@@ -132,6 +144,72 @@ export default function Year34Slide() {
         <p>Job growth projections show continual increase across all tracks.</p>
         <p>Cloud, AI, and mobile technologies are leading the next decade.</p>
       </div>
+      <Modal open={!!selected} onClose={() => setSelected(null)}>
+        {selected && (
+          <div className="space-y-3">
+            <h3 className="text-xl font-bold flex items-center gap-2">
+              <span>{selected.icon}</span> {selected.name}
+            </h3>
+            <div className="flex gap-2">
+              {['overview', 'projects', 'careers', 'learning'].map((t) => (
+                <button
+                  key={t}
+                  onClick={() => setTab(t)}
+                  className={`px-2 py-1 border rounded text-sm ${tab === t ? 'bg-accent text-black' : 'bg-black/50 border-accent'}`}
+                >
+                  {t.charAt(0).toUpperCase() + t.slice(1)}
+                </button>
+              ))}
+            </div>
+            {tab === 'overview' && (
+              <div className="text-sm space-y-1">
+                <p>{selected.description}</p>
+                <div className="grid grid-cols-2 gap-1">
+                  {Object.entries(selected.techStack).map(([k, list]) => (
+                    <div key={k}>
+                      <h4 className="font-semibold text-accent text-xs">{k}</h4>
+                      <p className="text-xs">{list.join(', ')}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {tab === 'projects' && (
+              <div className="space-y-1 text-sm">
+                {selected.projectExamples?.map((p) => (
+                  <div key={p.title} className="border-b pb-1">
+                    <div className="font-semibold">{p.title}</div>
+                    <p className="text-xs">{p.description}</p>
+                    <p className="text-xs text-gray-400">Tech: {p.tech.join(', ')}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+            {tab === 'careers' && (
+              <div className="space-y-1 text-sm">
+                {selected.careerPaths?.map((c) => (
+                  <div key={c.title} className="flex justify-between text-xs border-b pb-1">
+                    <span>{c.title}</span>
+                    <span className="text-gray-400">{c.salary} THB – {c.demand}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {tab === 'learning' && (
+              <div className="text-sm space-y-1">
+                {selected.learningPath && (
+                  <>
+                    <h4 className="font-semibold text-accent text-xs">Year 3</h4>
+                    <p className="text-xs">{selected.learningPath.year3.join(', ')}</p>
+                    <h4 className="font-semibold text-accent text-xs mt-2">Year 4</h4>
+                    <p className="text-xs">{selected.learningPath.year4.join(', ')}</p>
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
