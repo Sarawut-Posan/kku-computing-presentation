@@ -8,9 +8,11 @@ module.exports = {
     extend: {
       fontFamily: {
         kanit: ['Kanit', 'sans-serif'],
+        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
       },
       colors: {
-        accent: '#ffa500',
+        accent: '#00ff41',
+        cyanaccent: '#00ffff',
       },
     },
   },
