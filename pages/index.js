@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
-  const { current, handleClick } = useSlideNavigation();
+  const { current } = useSlideNavigation();
   const SlideComponent = slides[current] || slides[0];
   const [loading, setLoading] = useState(true);
 
@@ -50,7 +50,7 @@ export default function Home() {
   };
 
   return (
-    <div onClick={handleClick} className="w-full h-full relative">
+    <div className="w-full h-full relative">
       <AnimatePresence mode="wait">
         <motion.div
           key={current}

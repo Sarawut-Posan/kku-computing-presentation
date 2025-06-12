@@ -27,7 +27,5 @@ export function useSlideNavigation() {
     return () => window.removeEventListener('keydown', handleKey);
   }, [nextSlide, prevSlide]);
 
-  const handleClick = () => nextSlide();
-
-  return { current, nextSlide, prevSlide, handleClick };
+  return { current, nextSlide, prevSlide };
 }
