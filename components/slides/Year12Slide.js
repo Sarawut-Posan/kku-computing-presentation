@@ -52,34 +52,34 @@ export default function Year12Slide() {
         <motion.section variants={animations.section} className="space-y-2">
           <h3 className="text-xl md:text-3xl font-semibold">Programming Progression Timeline</h3>
           <pre className="text-sm md:text-base bg-black/50 p-4 rounded whitespace-pre">
-{`// Week 1: First Hello World
-console.log("Hello, World!");
+          {`// Week 1: First Hello World
+          console.log("Hello, World!");
 
-// Month 3: Basic Functions
-function calculateGPA(credits, points) {
-  return points / credits;
-}
+          // Month 3: Basic Functions
+          function calculateGPA(credits, points) {
+            return points / credits;
+          }
 
-// Month 6: Object-Oriented Programming
-class Student {
-  constructor(name, id) {
-    this.name = name;
-    this.studentId = id;
-    this.courses = [];
-  }
+          // Month 6: Object-Oriented Programming
+          class Student {
+            constructor(name, id) {
+              this.name = name;
+              this.studentId = id;
+              this.courses = [];
+            }
 
-  enrollCourse(course) {
-    this.courses.push(course);
-  }
-}
+            enrollCourse(course) {
+              this.courses.push(course);
+            }
+          }
 
-// Month 12: Data Structures
-class LinkedList {
-  constructor() {
-    this.head = null;
-    this.size = 0;
-  }
-}`}
+          // Month 12: Data Structures
+          class LinkedList {
+            constructor() {
+              this.head = null;
+              this.size = 0;
+            }
+          }`}
           </pre>
         </motion.section>
 
@@ -116,18 +116,18 @@ class LinkedList {
         <motion.section variants={animations.section} className="space-y-2">
           <h3 className="text-xl md:text-3xl font-semibold">Development Tools Mastery</h3>
           <pre className="text-sm md:text-base bg-black/50 p-4 rounded whitespace-pre">
-{`bash# Terminal Commands Learned
-$ git init
-$ git add .
-$ git commit -m "First commit 🎉"
-$ git push origin main
+                {`bash# Terminal Commands Learned
+                $ git init
+                $ git add .
+                $ git commit -m "First commit 🎉"
+                $ git push origin main
 
-# VS Code Extensions Used
-- GitLens
-- Prettier
-- Live Server
-- Python Extension
-- Bracket Pair Colorizer`}
+                # VS Code Extensions Used
+                - GitLens
+                - Prettier
+                - Live Server
+                - Python Extension
+                - Bracket Pair Colorizer`}
           </pre>
         </motion.section>
 
@@ -139,7 +139,7 @@ $ git push origin main
             items={[
               'Calculator App (Month 2) - HTML, CSS, JavaScript',
               'Student Grade System (Month 6) - Python, SQLite',
-              'Mini Social Network (Month 10) - React, Node.js, MongoDB',
+              'Mini Social Network (Month 10) - React, Node.js, MSSQL',
               'Mobile Weather App (Month 12) - React Native, Weather API',
             ]}
           />
