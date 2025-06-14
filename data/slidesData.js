@@ -7,6 +7,7 @@ import SalarySlide from '../components/slides/SalarySlide';
 import PrepareSlide from '../components/slides/PrepareSlide';
 import FutureSlide from '../components/slides/FutureSlide';
 import ContactSlide from '../components/slides/ContactSlide';
+import QASlide from '../components/slides/QASlide';
 
 const slides = [
   TitleSlide,
@@ -18,6 +19,7 @@ const slides = [
   PrepareSlide,
   FutureSlide,
   ContactSlide,
+  QASlide,
 ];
 
 export default slides;
